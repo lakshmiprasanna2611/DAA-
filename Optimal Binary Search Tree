@@ -1,55 +1,65 @@
-#include <stdio.h>
-#include <limits.h>
-#define MAX_SIZE 10
-int graph[MAX_SIZE][MAX_SIZE];
-int minCost = INT_MAX;
-int optimalPath[MAX_SIZE];
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-void findPermutations(int arr[], int start, int n) {
-    if (start == n - 1) {
-        int currentCost = 0;
-        for (int i = 0; i < n - 1; i++) {
-            currentCost += graph[arr[i]][arr[i + 1]];
-        }
-        currentCost += graph[arr[n - 1]][arr[0]]; // Return to the starting city
-        if (currentCost < minCost) {
-            minCost = currentCost;
-            for (int i = 0; i < n; i++) {
-                optimalPath[i] = arr[i];
-            }
-        }
-        return;
-    }
-    for (int i = start; i < n; i++) {
-        swap(&arr[start], &arr[i]);
-        findPermutations(arr, start + 1, n);
-        swap(&arr[start], &arr[i]); // backtrack
-    }
-}
-int main() {
-    int n;
-    printf("Enter the number of cities (maximum 10): ");
-    scanf("%d", &n);
-    printf("Enter the adjacency matrix for the graph:\n");
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            scanf("%d", &graph[i][j]);
-        }
-    }
-    int cities[MAX_SIZE];
-    for (int i = 0; i < n; i++) {
-        cities[i] = i;
-    }
-    findPermutations(cities, 0, n);
-    printf("Optimal cost: %d\n", minCost);
-    printf("Optimal path: ");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", optimalPath[i]);
-    }
-    printf("\n");
-    return 0;
+#include<stdio.h>
+#define MAX 10
+int main()
+{
+	char ele[MAX][MAX];
+	int w[MAX][MAX], c[MAX][MAX], r[MAX][MAX], p[MAX], q[MAX];
+	int temp=0, root, min, min1, n;
+	int i,j,k,b;	
+	printf("Enter the number of elements:");
+	scanf("%d",&n);
+	printf("\n");
+	for(i=1; i <= n; i++)
+	{
+	printf("Enter the Element of %d:",i);
+	scanf("%d",&p[i]);
+	}
+	printf("\n");
+	for(i=1; i <= n; i++)
+	{
+	printf("Enter the Probability of %d:",i);
+	scanf("%d",&q[i]);
+	}
+	printf("W\t\tC\t\tR\n");	
+	for(i=0; i <= n; i++)
+	{
+	for(j=0; j <= n; j++)
+	{
+	if(i == j)
+	{
+	w[i][j] = q[i];
+	c[i][j] = 0;
+	r[i][j] = 0;
+	printf("W[%d][%d]: %d\tC[%d][%d]: %d\tR[%d][%d]: %d\n",i,j,w[i][j],i,j,c[i][j],i,j,r[i][j]);
+	}
+	}
+	}
+	printf("\n");
+	for(b=0; b < n; b++)
+	{
+	for(i=0,j=b+1; j < n+1 && i < n+1; j++,i++)
+	{
+	if(i!=j && i < j)
+	{
+	w[i][j] = p[j] + q[j] + w[i][j-1];	
+	min = 30000;
+	for(k = i+1; k <= j; k++)
+	{
+	min1 = c[i][k-1] + c[k][j] + w[i][j];
+	if(min > min1)
+	{
+	min = min1;
+	temp = k;
+	}
+	}
+    c[i][j] = min;
+	r[i][j] = temp;
+	}
+	printf("W[%d][%d]: %d\tC[%d][%d]: %d\tR[%d][%d]: %d\n",i,j,w[i][j],i,j,c[i][j],i,j,r[i][j]);
+	}
+	printf("\n");
+	}
+	printf("Minimum cost = %d\n",c[0][n]);
+	root = r[0][n];
+	printf("Root  = %d \n",root);
 }
