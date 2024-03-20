@@ -1,13 +1,17 @@
 #include <stdio.h>
+ void reverse(char *str, int index,int n)
+{
+	if(index == n)
+		return;
+    char temp = str[index]; 
+	reverse(str, index + 1, n); 
+		printf("%c", temp);			 
+}
 int main() 
 {
-  int n, reverse = 0, remainder;
-  printf("Enter an integer: ");
-  scanf("%d", &n);
-  while (n != 0) {
-    remainder = n % 10;
-    reverse = reverse * 10 + remainder;
-    n /= 10;
-  }
-  printf("Reversed number = %d", reverse);
+	char a[] = "Lakshmi";
+	int n = sizeof(a) / sizeof(a[0]);
+	reverse(a, 0, n);
+
+	return 0;
 }
